@@ -20,6 +20,9 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -333,6 +336,47 @@ class WalletControllerTest {
             .content("{\"id\": \"227c4a47-08a3-4b6d-86b8-460904c71845\"}")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isMethodNotAllowed());
+    }
+
+    @Test
+    public void testWalletDepositConcurrent() throws InterruptedException {
+
+        UUID uuid = UUID.randomUUID();
+        WalletDTO stub = new WalletDTO();
+        stub.setId(uuid);
+        stub.setAmount(100L);
+
+        walletRepository.save(modelMapper.map(stub, Wallet.class));
+
+        WalletUpdateRequest updateRequest = new WalletUpdateRequest();
+        updateRequest.setId(stub.getId());
+        updateRequest.setOperationType(OperationType.DEPOSIT);
+        updateRequest.setAmount(1L);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(updateRequest);
+
+
+        int numberOfRequests = 1000;
+        ExecutorService executor = Executors.newFixedThreadPool(numberOfRequests);
+
+        for (int i = 0; i < numberOfRequests; i++) {
+            executor.submit(() -> {
+                try {
+                    mockMvc.perform(
+                        MockMvcRequestBuilders.post("/api/v1/wallet")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
+                        .accept(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+
+        executor.shutdown();
+        executor.awaitTermination(10, TimeUnit.SECONDS);
     }
 
 }
