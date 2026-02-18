@@ -30,7 +30,9 @@ public class WalletServiceImpl implements WalletService {
     public WalletDTO findById(UUID id) {
 
         if(id == null) {
-            throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "wallet id must not be null");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "wallet id must not be null"
+            );
         }
 
         Optional<Wallet> wallet = this.walletRepository.findById(id);
@@ -39,7 +41,9 @@ public class WalletServiceImpl implements WalletService {
             WalletDTO walletDTO = this.modelMapper.map(wallet, WalletDTO.class);
             return walletDTO;
         } else {
-            throw new ResponseStatusException( HttpStatus.BAD_REQUEST, "wallet not found");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "wallet not found"
+            );
         }
     }
 
