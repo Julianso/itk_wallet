@@ -44,8 +44,7 @@ public class WalletServiceImpl implements WalletService {
         Optional<Wallet> wallet = this.walletRepository.findById(id);
 
         if(wallet.isPresent()) {
-            WalletDTO walletDTO = this.modelMapper.map(wallet, WalletDTO.class);
-            return walletDTO;
+            return this.modelMapper.map(wallet, WalletDTO.class);
         } else {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "wallet not found"
