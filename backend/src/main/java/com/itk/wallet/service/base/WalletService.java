@@ -1,5 +1,6 @@
 package com.itk.wallet.service.base;
 
+import com.itk.wallet.api.request.WalletUpdateRequest;
 import com.itk.wallet.dto.WalletDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,6 @@ public interface WalletService {
 
     WalletDTO findById(UUID id);
 
-    void save(WalletDTO wallet);
+    void save(WalletUpdateRequest request);
 
 }
