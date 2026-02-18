@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: wallet
+  profiles:
+    active: jdbc
+  datasource:
+    url: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+    username: postgres
+    password: ${POSTGRES_PASSWORD:db-wrz2z}
+    driver-class-name: org.postgresql.Driver
+    continue-on-error: true
+    hikari:
+      maximum-pool-size: 1000
+      minimum-idle: 500
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 1680000
+      validation-timeout: 5000
+      leak-detection-threshold: 60000
+      pool-name: HikariPool
+  jpa:
+    show-sql=true
+    hibernate.ddl-auto=none
+    open-in-view=false
+    generate-ddl=false
+    dialect=org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    change-log=classpath:db/changelog/db.changelog-master.yaml
+  logging:
+    file:
+      path: logs/
+      name: application.log
+    level:
+      root: ERROR
+      com.itk.wallet: DEBUG

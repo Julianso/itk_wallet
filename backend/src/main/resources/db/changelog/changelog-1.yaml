@@ -1,0 +1,73 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Yuliy
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: wallets
+      changes:
+        - createTable:
+            tableName: wallets
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: amount
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: Yuliy
+      changes:
+        - insert:
+            tableName: wallets
+            columns:
+              - column:
+                  name: id
+                  value: "227c4a47-08a3-4b6d-86b8-460904c71841"
+              - column:
+                  name: amount
+                  value: "100"
+        - insert:
+            tableName: wallets
+            columns:
+              - column:
+                  name: id
+                  value: "227c4a47-08a3-4b6d-86b8-460904c71842"
+              - column:
+                  name: amount
+                  value: "200"
+        - insert:
+            tableName: wallets
+            columns:
+              - column:
+                  name: id
+                  value: "227c4a47-08a3-4b6d-86b8-460904c71843"
+              - column:
+                  name: amount
+                  value: "300"
+        - insert:
+            tableName: wallets
+            columns:
+              - column:
+                  name: id
+                  value: "227c4a47-08a3-4b6d-86b8-460904c71844"
+              - column:
+                  name: amount
+                  value: "400"
+        - insert:
+            tableName: wallets
+            columns:
+              - column:
+                  name: id
+                  value: "227c4a47-08a3-4b6d-86b8-460904c71845"
+              - column:
+                  name: amount
+                  value: "500"
