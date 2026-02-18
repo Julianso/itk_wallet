@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,6 +20,7 @@ import java.util.UUID;
 @Validated
 @Component
 @Service
+@Transactional
 public class WalletServiceImpl implements WalletService {
 
     @Autowired
@@ -26,6 +29,7 @@ public class WalletServiceImpl implements WalletService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Transactional
     @Override
     public WalletDTO findById(UUID id) {
 
@@ -47,8 +51,9 @@ public class WalletServiceImpl implements WalletService {
         }
     }
 
+    @Transactional
     @Override
-    public void save(WalletDTO walletDTO) {
+    public synchronized void save(WalletDTO walletDTO) {
         Wallet wallet = this.modelMapper.map(walletDTO, Wallet.class);
         this.walletRepository.save(wallet);
     }

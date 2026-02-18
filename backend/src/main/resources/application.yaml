@@ -10,9 +10,9 @@ spring:
     driver-class-name: org.postgresql.Driver
     continue-on-error: true
     hikari:
-      maximum-pool-size: 1000
+      maximum-pool-size: 2000
       minimum-idle: 500
-      connection-timeout: 20000
+      connection-timeout: 50000
       idle-timeout: 300000
       max-lifetime: 1680000
       validation-timeout: 5000
@@ -33,3 +33,7 @@ spring:
     level:
       root: ERROR
       com.itk.wallet: DEBUG
+  server:
+    tomcat:
+      threads:
+        max: 1100

@@ -6,7 +6,9 @@ import com.itk.wallet.dto.WalletDTO;
 import com.itk.wallet.model.Wallet;
 import com.itk.wallet.repository.WalletRepository;
 import com.itk.wallet.utils.OperationType;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -341,6 +343,9 @@ class WalletControllerTest {
     @Test
     public void testWalletDepositConcurrent() throws InterruptedException {
 
+        int numberOfRequests = 1000;
+        long amountPerRequest = 1L;
+
         UUID uuid = UUID.randomUUID();
         WalletDTO stub = new WalletDTO();
         stub.setId(uuid);
@@ -351,13 +356,11 @@ class WalletControllerTest {
         WalletUpdateRequest updateRequest = new WalletUpdateRequest();
         updateRequest.setId(stub.getId());
         updateRequest.setOperationType(OperationType.DEPOSIT);
-        updateRequest.setAmount(1L);
+        updateRequest.setAmount(amountPerRequest);
 
         Gson gson = new Gson();
         String json = gson.toJson(updateRequest);
 
-
-        int numberOfRequests = 1000;
         ExecutorService executor = Executors.newFixedThreadPool(numberOfRequests);
 
         for (int i = 0; i < numberOfRequests; i++) {
