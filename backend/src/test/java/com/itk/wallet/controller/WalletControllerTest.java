@@ -49,7 +49,7 @@ class WalletControllerTest {
     private ModelMapper modelMapper;
 
     @Test
-    void testGetWallet() throws Exception {
+    void testWalletGet() throws Exception {
 
         UUID uuid = UUID.randomUUID();
         WalletDTO stub = new WalletDTO();
@@ -68,7 +68,7 @@ class WalletControllerTest {
     }
 
     @Test
-    void testGetWalletNotFound() throws Exception {
+    void testWalletGetNotFound() throws Exception {
 
         UUID uuid = UUID.randomUUID();
         WalletDTO stub = new WalletDTO();
