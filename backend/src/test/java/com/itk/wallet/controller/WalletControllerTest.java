@@ -16,14 +16,12 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
 import java.util.UUID;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -31,7 +29,8 @@ import java.util.UUID;
 class WalletControllerTest {
 
     @Container
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine");
+    static PostgreSQLContainer<?> postgres =
+            new PostgreSQLContainer<>("postgres:15-alpine");
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
@@ -60,12 +59,12 @@ class WalletControllerTest {
         walletRepository.save(modelMapper.map(stub, Wallet.class));
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.get("/api/v1/wallets/" + stub.getId())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(stub.getId().toString()))
-                .andExpect(jsonPath("$.amount").value(stub.getAmount()))
-                .andExpect(status().isOk());
+            MockMvcRequestBuilders.get("/api/v1/wallets/" + stub.getId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.id").value(stub.getId().toString()))
+            .andExpect(jsonPath("$.amount").value(stub.getAmount()))
+            .andExpect(status().isOk());
     }
 
     @Test
@@ -79,10 +78,11 @@ class WalletControllerTest {
         walletRepository.save(modelMapper.map(stub, Wallet.class));
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.get("/api/v1/wallets/" + UUID.randomUUID())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+            MockMvcRequestBuilders.get("/api/v1/wallets/" +
+                            UUID.randomUUID())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -103,19 +103,19 @@ class WalletControllerTest {
         Gson gson = new Gson();
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/wallet")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(gson.toJson(updateRequest))
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+            MockMvcRequestBuilders.post("/api/v1/wallet")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(gson.toJson(updateRequest))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.get("/api/v1/wallets/" + stub.getId())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(stub.getId().toString()))
-                .andExpect(jsonPath("$.amount").value(101))
-                .andExpect(status().isOk());
+            MockMvcRequestBuilders.get("/api/v1/wallets/" + stub.getId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.id").value(stub.getId().toString()))
+            .andExpect(jsonPath("$.amount").value(101))
+            .andExpect(status().isOk());
     }
 
     @Test
@@ -136,19 +136,20 @@ class WalletControllerTest {
         Gson gson = new Gson();
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/wallet")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(gson.toJson(updateRequest))
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+            MockMvcRequestBuilders.post("/api/v1/wallet")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(gson.toJson(updateRequest))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.get("/api/v1/wallets/" + stub.getId())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(stub.getId().toString()))
-                .andExpect(jsonPath("$.amount").value(0))
-                .andExpect(status().isOk());
+            MockMvcRequestBuilders.get("/api/v1/wallets/" +
+                            stub.getId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.id").value(stub.getId().toString()))
+            .andExpect(jsonPath("$.amount").value(0))
+            .andExpect(status().isOk());
     }
 
     @Test
@@ -169,11 +170,11 @@ class WalletControllerTest {
         Gson gson = new Gson();
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/wallet")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(gson.toJson(updateRequest))
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+            MockMvcRequestBuilders.post("/api/v1/wallet")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(gson.toJson(updateRequest))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -194,11 +195,11 @@ class WalletControllerTest {
         Gson gson = new Gson();
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/wallet")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(gson.toJson(updateRequest))
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+            MockMvcRequestBuilders.post("/api/v1/wallet")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(gson.toJson(updateRequest))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -219,114 +220,119 @@ class WalletControllerTest {
         Gson gson = new Gson();
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/wallet")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(gson.toJson(updateRequest))
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+            MockMvcRequestBuilders.post("/api/v1/wallet")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(gson.toJson(updateRequest))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
     void testWalletUpdateIncorrectId() throws Exception {
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/wallet")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("{\"id\": \"\",\"operationType\": \"DEPOSIT\",\"amount\": \"100\"}")
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+            MockMvcRequestBuilders.post("/api/v1/wallet")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"id\": \"\",\"operationType\": \"DEPOSIT\"," +
+                    "\"amount\": \"100\"}")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/wallet")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("{\"id\": \"227c4a47-08a3-4b6d-86b8-\",\"operationType\": \"DEPOSIT\",\"amount\": \"100\"}")
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+            MockMvcRequestBuilders.post("/api/v1/wallet")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"id\": \"227c4a47-08a3-4b6d-86b8-\"," +
+                    "\"operationType\": \"DEPOSIT\",\"amount\": \"100\"}")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/wallet")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("{\"uuid\": \"227c4a47-08a3-4b6d-86b8-460904c71845\",\"operationType\": \"DEPOSIT\",\"amount\": \"100\"}")
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+            MockMvcRequestBuilders.post("/api/v1/wallet")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"uuid\": \"227c4a47-08a3-4b6d-86b8-460904c71845\"," +
+                    "\"operationType\": \"DEPOSIT\",\"amount\": \"100\"}")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
     void testWalletUpdateIncorrectAmount() throws Exception {
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/wallet")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("{\"id\": \"227c4a47-08a3-4b6d-86b8-460904c71845\",\"operationType\": \"DEPOSIT\",\"amount\": \"-100\"}")
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+            MockMvcRequestBuilders.post("/api/v1/wallet")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"id\": \"227c4a47-08a3-4b6d-86b8-460904c71845\"," +
+                    "\"operationType\": \"DEPOSIT\",\"amount\": \"-100\"}")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/wallet")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("{\"id\": \"227c4a47-08a3-4b6d-86b8-460904c71845\",\"operationType\": \"DEPOSIT\",\"amount\": \"ONE_HUNDRED\"}")
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
-
+            MockMvcRequestBuilders.post("/api/v1/wallet")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"id\": \"227c4a47-08a3-4b6d-86b8-460904c71845\"," +
+                    "\"operationType\": \"DEPOSIT\",\"amount\": \"ONE_HUNDRED\"}")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
     void testWalletUpdateIncorrectOperationType() throws Exception {
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/wallet")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("{\"id\": \"227c4a47-08a3-4b6d-86b8-460904c71845\",\"operationType\": \"DELETE\",\"amount\": \"100\"}")
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
-
+            MockMvcRequestBuilders.post("/api/v1/wallet")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"id\": \"227c4a47-08a3-4b6d-86b8-460904c71845\"," +
+                    "\"operationType\": \"DELETE\",\"amount\": \"100\"}")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
     void testWalletUpdateIncorrectJson() throws Exception {
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/wallet")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("")
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+            MockMvcRequestBuilders.post("/api/v1/wallet")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/wallet")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("{")
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+            MockMvcRequestBuilders.post("/api/v1/wallet")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/wallet")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("{}")
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+            MockMvcRequestBuilders.post("/api/v1/wallet")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{}")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
     void testWalletUpdateIncorrectPath() throws Exception {
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/v1/wallet/update")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("{\"id\": \"227c4a47-08a3-4b6d-86b8-460904c71845\",\"operationType\": \"DEPOSIT\",\"amount\": \"100\"}")
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+            MockMvcRequestBuilders.post("/api/v1/wallet/update")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"id\": \"227c4a47-08a3-4b6d-86b8-460904c71845\"," +
+                    "\"operationType\": \"DEPOSIT\",\"amount\": \"100\"}")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound());
     }
 
     @Test
     void testWalletUpdateIncorrectMethod() throws Exception {
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.delete("/api/v1/wallet")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content("{\"id\": \"227c4a47-08a3-4b6d-86b8-460904c71845\"}")
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isMethodNotAllowed());
+            MockMvcRequestBuilders.delete("/api/v1/wallet")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"id\": \"227c4a47-08a3-4b6d-86b8-460904c71845\"}")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isMethodNotAllowed());
     }
 
 }
